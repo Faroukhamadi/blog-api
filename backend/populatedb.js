@@ -24,8 +24,13 @@ const users = [];
 const posts = [];
 const comments = [];
 
-function userCreate(username, password, cb) {
-  let userDetail = { username: username, password: password };
+function userCreate(username, password, comments, isAdmin, cb) {
+  let userDetail = {
+    username: username,
+    password: password,
+    comments: comments,
+    isAdmin: isAdmin,
+  };
   const user = new User(userDetail);
 
   user.save(function (err) {
@@ -39,12 +44,11 @@ function userCreate(username, password, cb) {
   });
 }
 
-function postCreate(title, content, Date, user, cb) {
+function postCreate(title, content, Date, cb) {
   const post = new Post({
     title: title,
     content: content,
     Date: Date,
-    user: user,
   });
 
   post.save(function (err) {
@@ -70,7 +74,8 @@ function commentCreate(content, Date, user, cb) {
       return;
     }
     console.log('New Comment: ' + comment);
-    posts.push(comment);
+    comments.push(comment);
+    console.log('comments array: ', comments);
     cb(null, comment);
   });
 }
@@ -79,19 +84,129 @@ function createProductsCategories(cb) {
   async.series(
     [
       function (callback) {
-        userCreate('faroukhamadi', 'passwordfarouk', callback);
+        commentCreate(
+          'Opening his morning comment, she read.',
+          new Date(),
+          users[0],
+          callback
+        );
       },
       function (callback) {
-        userCreate('hayetmejri', 'passwordhayet', callback);
+        commentCreate(
+          'He repeated her comment about the Porsche, "Nice wheels."',
+          new Date(),
+          users[0],
+          callback
+        );
       },
       function (callback) {
-        userCreate('mihyarhamadi', 'passwordmihyar', callback);
+        commentCreate(
+          'Without comment, he shifted his attention back to his plate.',
+          new Date(),
+          users[1],
+          callback
+        );
       },
       function (callback) {
-        userCreate('nardinehamadi', 'passwordnardine', callback);
+        commentCreate(
+          'She sensed this comment was directed at her.',
+          new Date(),
+          users[1],
+          callback
+        );
       },
       function (callback) {
-        userCreate('aoushamadi', 'passwordaous', callback);
+        commentCreate(
+          'I think she was merely directing the comment at you because she thought you might want to know.',
+          new Date(),
+          users[2],
+          callback
+        );
+      },
+      function (callback) {
+        commentCreate(
+          "The man just nodded but didn't comment further.",
+          new Date(),
+          users[2],
+          callback
+        );
+      },
+      function (callback) {
+        commentCreate(
+          'It was this that saved her from some snide comment about her less-than-fashionable clothes.',
+          new Date(),
+          users[3],
+          callback
+        );
+      },
+      function (callback) {
+        commentCreate(
+          'One of the ladies who worked at the courthouse made an offhand comment about the popular Lucky Pup Mine.',
+          new Date(),
+          users[3],
+          callback
+        );
+      },
+      function (callback) {
+        commentCreate(
+          'Before Dean could comment, the conversation ended as a commotion upstairs called for his attention.',
+          new Date(),
+          users[4],
+          callback
+        );
+      },
+      function (callback) {
+        commentCreate(
+          'At least he was considerate enough not to comment on her obvious interest in his physique.',
+          new Date(),
+          users[4],
+          callback
+        );
+      },
+      function (callback) {
+        userCreate(
+          'faroukhamadi',
+          'passwordfarouk',
+          [comments[0], comments[1]],
+          true,
+          callback
+        );
+      },
+      function (callback) {
+        userCreate(
+          'hayetmejri',
+          'passwordhayet',
+          [comments[2], comments[3]],
+          false,
+          callback
+        );
+      },
+      function (callback) {
+        userCreate(
+          'mihyarhamadi',
+          'passwordmihyar',
+          [comments[4], comments[5]],
+          false,
+          callback
+        );
+      },
+      function (callback) {
+        userCreate(
+          'nardinehamadi',
+          'passwordnardine',
+          [comments[6], comments[7]],
+          false,
+          callback
+        );
+      },
+      function (callback) {
+        userCreate(
+          'aoushamadi',
+          'passwordaous',
+          [comments[8], comments[9]],
+          false,
+          callback
+        );
       },
 
       function (callback) {
@@ -99,7 +214,6 @@ function createProductsCategories(cb) {
           'The Cheesecake Factory: Use humor and great photos',
           'This is an American chain of restaurants, localized around the world. If you’re not familiar with it.',
           new Date(),
-          users[0],
           callback
         );
       },
@@ -108,7 +222,6 @@ function createProductsCategories(cb) {
           'Google: Share interesting customer stories',
           "Google Maps is one of those things that doesn't need much explaining. Most people know what it does, it helps you get from A to B.",
           new Date(),
-          users[1],
           callback
         );
       },
@@ -117,7 +230,6 @@ function createProductsCategories(cb) {
           "Tony's Chocolate lonely: Show people what's happening",
           'Includes amazing features with fast charging capabilities that are amazingly crafted by our apple hard-working employees',
           new Date(),
-          users[2],
           callback
         );
       },
@@ -126,7 +238,6 @@ function createProductsCategories(cb) {
           'The Clay Creative Co: Increase followers with giveaways',
           "Now, this is an online store you've probably not heard of, as it’s a small business from the UK that sells its earrings through Etsy.",
           new Date(),
-          users[3],
           callback
         );
       },
@@ -135,7 +246,6 @@ function createProductsCategories(cb) {
           'Social Media Examiner: Share your expertise',
           "Social Media Examiner is a media company that's based in the United States. It publishes online magazines.",
           new Date(),
-          users[4],
           callback
         );
       },

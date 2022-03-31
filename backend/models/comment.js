@@ -3,7 +3,7 @@ const { Schema } = require('mongoose');
 const { formatISO9075 } = require('date-fns');
 
 const CommentSchema = new Schema({
-  content: { type: String, minlength: 3, maxlength: 100, required: true },
+  content: { type: String, minlength: 3, maxlength: 500, required: true },
   Date: { type: Date, required: true },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
 });
