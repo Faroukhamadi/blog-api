@@ -14,3 +14,10 @@ exports.post_list = (req, res, next) => {
       res.json({ list_posts });
     });
 };
+
+exports.delete_post = (req, res, next) => {
+  Post.findByIdAndRemove(req.params.id, (err, result) => {
+    if (err) return next(err);
+    res.send({ result });
+  });
+};
