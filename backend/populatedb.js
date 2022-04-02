@@ -62,11 +62,11 @@ function postCreate(title, content, Date, comments, cb) {
     cb(null, post);
   });
 }
-function commentCreate(content, Date, user, cb) {
+function commentCreate(content, Date, name, cb) {
   const comment = new Comment({
     content: content,
     Date: Date,
-    user: user,
+    name: name,
   });
 
   comment.save(function (err) {
@@ -88,6 +88,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'Opening his morning comment, she read.',
           new Date(),
+          'Farouk',
           callback
         );
       },
@@ -95,6 +96,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'He repeated her comment about the Porsche, "Nice wheels."',
           new Date(),
+          'John',
           callback
         );
       },
@@ -102,6 +104,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'Without comment, he shifted his attention back to his plate.',
           new Date(),
+          'Mac',
           callback
         );
       },
@@ -109,6 +112,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'She sensed this comment was directed at her.',
           new Date(),
+          'Sergio',
           callback
         );
       },
@@ -116,6 +120,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'I think she was merely directing the comment at you because she thought you might want to know.',
           new Date(),
+          'Stereo',
           callback
         );
       },
@@ -123,6 +128,7 @@ function createProductsCategories(cb) {
         commentCreate(
           "The man just nodded but didn't comment further.",
           new Date(),
+          'theDude',
           callback
         );
       },
@@ -130,6 +136,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'It was this that saved her from some snide comment about her less-than-fashionable clothes.',
           new Date(),
+          'TheGuy',
           callback
         );
       },
@@ -137,6 +144,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'One of the ladies who worked at the courthouse made an offhand comment about the popular Lucky Pup Mine.',
           new Date(),
+          'runThemStreets',
           callback
         );
       },
@@ -144,6 +152,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'Before Dean could comment, the conversation ended as a commotion upstairs called for his attention.',
           new Date(),
+          'cringeName',
           callback
         );
       },
@@ -151,6 +160,7 @@ function createProductsCategories(cb) {
         commentCreate(
           'At least he was considerate enough not to comment on her obvious interest in his physique.',
           new Date(),
+          'moreCringeButYeah',
           callback
         );
       },

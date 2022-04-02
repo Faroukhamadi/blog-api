@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Comment = require('../models/comment');
+const Post = require('../models/post');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
@@ -46,5 +47,18 @@ exports.update_user = (req, res, next) => {
 exports.update_comment = (req, res, next) => {
   Comment.findByIdAndUpdate(req.params.id, req.body, (err, comment) => {
     res.send({ comment });
+  });
+};
+
+exports.post_comment = (req, res, next) => {
+  const comment = new Comment(req.body);
+  comment.save((err, comment) => {
+    if (err) return next(err);
+    Post.findByIdAndUpdate(req.params.id, {
+      $push: { comments: comment._id },
+    }).exec((err, result) => {
+      if (err) return next(err);
+      res.send({ comment });
+    });
   });
 };
