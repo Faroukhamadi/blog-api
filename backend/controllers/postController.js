@@ -28,3 +28,13 @@ exports.update_post = (req, res, next) => {
     res.send({ post });
   });
 };
+
+exports.post_comments_list = (req, res, next) => {
+  Post.findById(req.params.id)
+    .populate('comments')
+    .exec((err, comments) => {
+      console.log('id: ' + req.params.id + '---');
+      if (err) return next(err);
+      res.send({ comments });
+    });
+};

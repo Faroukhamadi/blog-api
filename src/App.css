@@ -2,8 +2,7 @@ body,
 #root,
 html,
 .app,
-.main {
-  /* min-height: 100vh; */
+.post {
   min-height: 100vh;
   min-width: 100vh;
 }
@@ -31,11 +30,6 @@ html,
   margin-right: 10px;
 }
 
-.main,
 .yes {
   background: lightblue;
-}
-
-.footer {
-  background: red;
 }

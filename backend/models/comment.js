@@ -5,7 +5,7 @@ const { formatISO9075 } = require('date-fns');
 const CommentSchema = new Schema({
   content: { type: String, minlength: 3, maxlength: 500, required: true },
   Date: { type: Date, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  name: { type: String, minlength: 3, maxlength: 50, required: true },
 });
 
 CommentSchema.virtual('dateTime').get(function () {
