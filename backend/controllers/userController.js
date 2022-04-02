@@ -65,19 +65,24 @@ exports.post_comment = (req, res, next) => {
 // exports.user_signup_post = (req, res) => {};
 
 exports.user_signup_post = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+  User.findOne({ username: req.body.username }, (err, user) => {
     if (err) return next(err);
-    const user = new User({
-      username: req.body.username,
-      password: hashedPassword,
-    });
-    user.save((err, result) => {
+    if (user) {
+      res.status = 409;
+      return res.send({ message: 'User already exists' });
+    }
+    bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
       if (err) return next(err);
-      res.send({ result });
+      const user = new User({
+        username: req.body.username,
+        password: hashedPassword,
+      });
+      user.save((err, result) => {
+        if (err) return next(err);
+        res.send({ result });
+      });
     });
   });
 };
 
-exports.user_login_post = (req, res, next) => {
-  passport.authenticate('local');
-};
+exports.user_login_post = passport.authenticate('local');
