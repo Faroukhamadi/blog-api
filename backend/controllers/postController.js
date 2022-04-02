@@ -21,3 +21,10 @@ exports.delete_post = (req, res, next) => {
     res.send({ result });
   });
 };
+
+exports.update_post = (req, res, next) => {
+  Post.findByIdAndUpdate(req.params.id, req.body, (err, post) => {
+    if (err) return next(err);
+    res.send({ post });
+  });
+};

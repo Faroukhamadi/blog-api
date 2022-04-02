@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import Header from './components/Header';
+import Main from './components/Main';
+import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -9,7 +12,8 @@ function App() {
 
   useEffect(() => {
     const fetchUsers = () => {
-      return fetch('/api/users')
+      console.log('run1');
+      fetch('/api/users')
         .then((response) => response.json())
         .then((data) => {
           let temp = [];
@@ -25,9 +29,8 @@ function App() {
     };
 
     const fetchPosts = () => {
-      return fetch('/api/posts', {
-        method: '',
-      })
+      console.log('run2');
+      fetch('/api/posts')
         .then((response) => response.json())
         .then((data) => {
           let temp = [];
@@ -43,7 +46,8 @@ function App() {
     };
 
     const fetchComments = () => {
-      return fetch('/api/users/comments')
+      console.log('run3');
+      fetch('/api/users/comments')
         .then((response) => response.json())
         .then((data) => {
           let temp = [];
@@ -52,7 +56,7 @@ function App() {
             setComments(temp);
           }
         })
-        .then(() => console.log(comments))
+        .then(() => console.log('yikes' + comments))
         .catch((err) => {
           console.log('Error: ', err);
         });
@@ -64,10 +68,10 @@ function App() {
 
   // hey;
   return (
-    <div className="App">
-      <Button variant="primary" className="btn-primary">
-        Let's go
-      </Button>
+    <div className="app ">
+      <Header />
+      <Main posts={posts} />
+      <Footer />
     </div>
   );
 }

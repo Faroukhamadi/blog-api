@@ -6,5 +6,6 @@ const Post = require('../models/post');
 
 router.get('/', post_controller.post_list);
 router.delete('/:id', post_controller.delete_post);
+router.put('/:id', post_controller.update_post);
 
 module.exports = router;

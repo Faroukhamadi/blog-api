@@ -36,3 +36,15 @@ exports.delete_comment = (req, res, next) => {
     res.send({ comment });
   });
 };
+
+exports.update_user = (req, res, next) => {
+  User.findByIdAndUpdate(req.params.id, req.body, (err, user) => {
+    res.send({ user });
+  });
+};
+
+exports.update_comment = (req, res, next) => {
+  Comment.findByIdAndUpdate(req.params.id, req.body, (err, comment) => {
+    res.send({ comment });
+  });
+};
