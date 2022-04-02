@@ -10,8 +10,16 @@ exports.post_list = (req, res, next) => {
     .sort('-date')
     .exec((err, list_posts) => {
       if (err) return next(err);
-      // Successful, so render
       res.json({ list_posts });
+    });
+};
+
+exports.published_post_list = (req, res, next) => {
+  Post.find({ isPublished: true })
+    .sort('-date')
+    .exec((err, list_published_posts) => {
+      if (err) return next(err);
+      res.json({ list_published_posts });
     });
 };
 

@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { body, validationResult } = require('express-validator');
 
-// exports.user_signup_get = (req, res) => {};
 exports.user_list = (req, res, next) => {
   User.find()
     .sort([['username', 'ascending']])
@@ -61,4 +60,24 @@ exports.post_comment = (req, res, next) => {
       res.send({ comment });
     });
   });
+};
+
+// exports.user_signup_post = (req, res) => {};
+
+exports.user_signup_post = (req, res, next) => {
+  bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
+    if (err) return next(err);
+    const user = new User({
+      username: req.body.username,
+      password: hashedPassword,
+    });
+    user.save((err, result) => {
+      if (err) return next(err);
+      res.send({ result });
+    });
+  });
+};
+
+exports.user_login_post = (req, res, next) => {
+  passport.authenticate('local');
 };
