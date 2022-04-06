@@ -5,11 +5,14 @@ import Footer from './components/Footer';
 import Post from './components/Post';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
   const [users, setUsers] = useState();
   const [posts, setPosts] = useState();
   const [comments, setComments] = useState();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchUsers = () => {
@@ -22,23 +25,25 @@ function App() {
           }
           setUsers(temp);
         })
-        .then(() => console.log(users))
+        // .then(() => console.log(users))
         .catch((err) => {
           console.log('Error: ', err);
         });
     };
 
     const fetchPosts = () => {
-      fetch('/api/posts')
+      // IMPORTANT: if you wanna get all posts
+      // fetch('/api/posts')
+      fetch('/api/posts/published')
         .then((response) => response.json())
         .then((data) => {
           let temp = [];
-          for (const post of data.list_posts) {
+          for (const post of data.list_published_posts) {
             temp.push(post);
           }
           setPosts(temp);
         })
-        .then(() => console.log(posts))
+        // .then(() => console.log(posts))
         .catch((err) => {
           console.log('Error: ', err);
         });
@@ -54,11 +59,12 @@ function App() {
           }
           setComments(temp);
         })
-        .then(() => console.log('yikes' + comments))
+        // .then(() => console.log('yikes' + comments))
         .catch((err) => {
           console.log('Error: ', err);
         });
     };
+
     fetchUsers();
     fetchPosts();
     fetchComments();
@@ -70,6 +76,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Main posts={posts} />} />
           <Route path="/:postId" element={<Post posts={posts} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
         <Footer />
       </BrowserRouter>

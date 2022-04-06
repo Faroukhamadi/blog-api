@@ -57,6 +57,7 @@ exports.post_comment = (req, res, next) => {
       $push: { comments: comment._id },
     }).exec((err, result) => {
       if (err) return next(err);
+      console.log(req.body);
       res.send({ comment });
     });
   });

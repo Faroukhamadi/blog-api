@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { formatISO9075, parseISO } from 'date-fns';
 
 const Post = (props) => {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState();
+  const [changeData, setChangeData] = useState(false);
   let { postId } = useParams();
   useEffect(() => {
     const fetchComments = () => {
@@ -18,18 +20,37 @@ const Post = (props) => {
           }
           setComments(temp);
         })
-        .then(() => console.log('This is comments state: ', comments))
+        // .then(() => console.log('This is comments state: ', comments))
         .catch((err) => {
           console.log('Error: ', err);
         });
     };
     fetchComments();
-  }, []);
+    console.log('USE EFFEEEEEEEEEEEEEEECT');
+  }, [changeData]);
+
+  async function postComment(data) {
+    const response = await fetch(`/api/users/comments/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(name);
-    console.log(comment);
+    postComment({
+      content: comment,
+      Date: new Date(),
+      name: name,
+    }).then((data) => console.log(data));
+    setName('');
+    setComment('');
+    setChangeData(!changeData);
+    navigate(0);
   };
 
   let commentContent;
@@ -41,7 +62,7 @@ const Post = (props) => {
             <blockquote className="blockquote mb-0">
               <p>{c.content}</p>
               <footer className="blockquote-footer">
-                Written by <cite title="Source Title">Farouk Hamadi </cite>
+                Written by <cite title="Source Title">{c.name} </cite>
                 <br />
                 Commented on
                 <cite title="Source Title">

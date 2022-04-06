@@ -26,9 +26,13 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(
   session({
-    secret: process.env.SECRET,
+    secret: 'cats',
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      secure: true,
+      sameSite: 'none',
+    },
   })
 );
 app.use(logger('dev'));
@@ -41,6 +45,7 @@ passport.use(
     User.findOne({ username: username }, (err, user) => {
       if (err) return done(err);
       if (!user) return done(null, false, { message: 'Incorrect username' });
+      // console.log('users password', user.password);
       bcrypt.compare(password, user.password, (err, res) => {
         console.log('INSIDEEEE1');
         if (res) {
@@ -75,10 +80,10 @@ app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
 app.get('/api/checkauthentication', (req, res) => {
-  const authenticated = typeof req.user !== 'undefined';
-  res.status(200).json({
-    authenticated,
-  });
+  // req.isAuthenticated()
+  req.isAuthenticated()
+    ? res.status(200).json({ authenticated: true })
+    : res.status(401).json({ authenticated: false });
 });
 
 // catch 404 and forward to error handler

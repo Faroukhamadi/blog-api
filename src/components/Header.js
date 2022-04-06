@@ -1,15 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
     <div className="header">
-      <h1>Daily Farouk</h1>
+      <h1>
+        <Link
+          to="/"
+          style={{
+            textDecoration: 'none',
+            color: '#212529',
+          }}
+        >
+          Daily Farouk
+        </Link>
+      </h1>
       <ul>
         <li>
-          <a href="#">Log In</a>
+          <a href="/login">Log In</a>
         </li>
         <li>
-          <a href="#">Sign Up</a>
+          <a href="/signup">Sign Up</a>
         </li>
       </ul>
     </div>

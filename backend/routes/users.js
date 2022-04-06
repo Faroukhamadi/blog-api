@@ -12,7 +12,14 @@ router.post('/comments/:id', user_controller.post_comment);
 router.put('/comments/:id', user_controller.update_comment);
 router.post('/signup', user_controller.user_signup_post);
 router.post('/login', user_controller.user_login_post, (req, res) => {
-  res.send(req.user);
+  console.log(req.body);
+  if (!req.user) {
+    console.log('User not found!');
+    res.send(req.body);
+  } else {
+    console.log('Signed in');
+    res.send(req.body);
+  }
 });
 
 module.exports = router;
