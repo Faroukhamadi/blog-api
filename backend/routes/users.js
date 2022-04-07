@@ -22,7 +22,6 @@ router.post('/login', user_controller.user_login_post, (req, res) => {
     }
   });
 });
-// TODO: Implement this first
 router.delete('/comments/:id', user_controller.delete_comment);
 router.get('/logout', user_controller.user_logout);
 

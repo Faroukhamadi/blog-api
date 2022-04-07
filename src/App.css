@@ -45,3 +45,7 @@ html,
 .admin {
   min-height: 100vh;
 }
+
+.create-post {
+  min-height: 100vh;
+}

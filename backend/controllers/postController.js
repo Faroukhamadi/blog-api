@@ -50,3 +50,14 @@ exports.update_post = (req, res, next) => {
     });
   });
 };
+exports.create_post = (req, res, next) => {
+  const post = new Post(req.body);
+  console.log('hello from create post1');
+  post.save((err, post) => {
+    console.log('hello from create post2');
+    console.log(err);
+    console.log(post);
+    if (err) return next(err);
+    res.json({ post });
+  });
+};

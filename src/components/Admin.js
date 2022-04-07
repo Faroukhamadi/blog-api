@@ -22,7 +22,7 @@ const Admin = (props) => {
                 fetch(`/api/posts/${post._id}`, {
                   method: 'PUT',
                 });
-                navigate(0);
+                navigate('/admin');
               }}
             >
               Unpublish
@@ -33,9 +33,9 @@ const Admin = (props) => {
               className="btn btn-outline-success m-2"
               onClick={() => {
                 fetch(`/api/posts/${post._id}`, {
-                  method: 'put',
+                  method: 'PUT',
                 });
-                navigate(0);
+                navigate('/admin');
               }}
             >
               Publish
@@ -48,7 +48,7 @@ const Admin = (props) => {
               fetch(`/api/posts/${post._id}`, {
                 method: 'DELETE',
               });
-              navigate(0);
+              navigate('/admin');
             }}
           >
             Delete
