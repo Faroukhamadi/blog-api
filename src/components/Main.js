@@ -6,8 +6,8 @@ import { AuthenticationContext } from '../App';
 const Main = (props) => {
   const contextValue = useContext(AuthenticationContext);
   let content;
-  if (props.posts) {
-    content = props.posts.map((post) => (
+  if (props.publishedPosts) {
+    content = props.publishedPosts.map((post) => (
       <div className="card text-center mb-4">
         <div className="card-body">
           <h5 className="card-title">{post.title}</h5>

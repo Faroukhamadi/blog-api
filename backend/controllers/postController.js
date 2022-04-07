@@ -30,13 +30,6 @@ exports.delete_post = (req, res, next) => {
   });
 };
 
-exports.update_post = (req, res, next) => {
-  Post.findByIdAndUpdate(req.params.id, req.body, (err, post) => {
-    if (err) return next(err);
-    res.send({ post });
-  });
-};
-
 exports.post_comments_list = (req, res, next) => {
   Post.findById(req.params.id)
     .populate('comments')
@@ -45,4 +38,15 @@ exports.post_comments_list = (req, res, next) => {
       if (err) return next(err);
       res.send({ comments });
     });
+};
+
+exports.update_post = (req, res, next) => {
+  Post.findById(req.params.id, (err, post) => {
+    post.isPublished = !post.isPublished;
+    post.save((err, updatedPost) => {
+      if (err) return next(err);
+      console.log('updated post: ', updatedPost);
+      next();
+    });
+  });
 };

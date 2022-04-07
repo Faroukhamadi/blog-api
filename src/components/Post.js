@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { formatISO9075, parseISO } from 'date-fns';
+import { AuthenticationContext } from '../App';
 
 const Post = (props) => {
+  const contextValue = useContext(AuthenticationContext);
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [comment, setComment] = useState('');
@@ -71,6 +73,20 @@ const Post = (props) => {
                     ' | ' +
                     formatISO9075(parseISO(c.Date)).substring(11, 16)}
                 </cite>
+                {contextValue && (
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger m-3"
+                    onClick={() => {
+                      fetch(`api/users/comments/${c._id}`, {
+                        method: 'delete',
+                      });
+                      navigate(0);
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
               </footer>
             </blockquote>
           </div>

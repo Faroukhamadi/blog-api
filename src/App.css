@@ -41,3 +41,7 @@ html,
 .signup {
   min-height: 100vh;
 }
+
+.admin {
+  min-height: 100vh;
+}

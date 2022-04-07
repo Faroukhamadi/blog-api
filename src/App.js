@@ -7,12 +7,14 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Admin from './components/Admin';
 const AuthenticationContext = createContext();
 export { AuthenticationContext };
 
 function App() {
   const [users, setUsers] = useState();
   const [posts, setPosts] = useState();
+  const [publishedPosts, setPublishedPosts] = useState();
   const [comments, setComments] = useState();
   const [loggedIn, setLoggedIn] = useState(false);
 
@@ -27,15 +29,27 @@ function App() {
           }
           setUsers(temp);
         })
-        // .then(() => console.log(users))
         .catch((err) => {
           console.log('Error: ', err);
         });
     };
 
     const fetchPosts = () => {
-      // IMPORTANT: if you wanna get all posts
-      // fetch('/api/posts')
+      fetch('/api/posts')
+        .then((response) => response.json())
+        .then((data) => {
+          let temp = [];
+          for (const post of data.list_posts) {
+            temp.push(post);
+          }
+          setPosts(temp);
+        })
+        .catch((err) => {
+          console.log('Error: ', err);
+        });
+    };
+
+    const fetchPublishedPosts = () => {
       fetch('/api/posts/published')
         .then((response) => response.json())
         .then((data) => {
@@ -43,9 +57,8 @@ function App() {
           for (const post of data.list_published_posts) {
             temp.push(post);
           }
-          setPosts(temp);
+          setPublishedPosts(temp);
         })
-        // .then(() => console.log(posts))
         .catch((err) => {
           console.log('Error: ', err);
         });
@@ -61,7 +74,6 @@ function App() {
           }
           setComments(temp);
         })
-        // .then(() => console.log('yikes' + comments))
         .catch((err) => {
           console.log('Error: ', err);
         });
@@ -69,6 +81,7 @@ function App() {
 
     fetchUsers();
     fetchPosts();
+    fetchPublishedPosts();
     fetchComments();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
@@ -77,13 +90,18 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
-            <Route exact path="/" element={<Main posts={posts} />} />
+            <Route
+              exact
+              path="/"
+              element={<Main publishedPosts={publishedPosts} />}
+            />
             <Route path="/:postId" element={<Post posts={posts} />} />
             <Route
               path="/login"
               element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
             />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/admin" element={<Admin posts={posts} />} />
           </Routes>
           <Footer />
         </BrowserRouter>

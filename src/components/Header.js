@@ -54,6 +54,11 @@ const Header = () => {
             </a>
           </li>
         )}
+        {contextValue && (
+          <li>
+            <Link to="/admin">Edit posts</Link>
+          </li>
+        )}
       </ul>
     </div>
   );
