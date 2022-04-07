@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { formatISO9075, parseISO } from 'date-fns';
+import { AuthenticationContext } from '../App';
 
 const Main = (props) => {
+  const contextValue = useContext(AuthenticationContext);
   let content;
   if (props.posts) {
     content = props.posts.map((post) => (

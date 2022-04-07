@@ -13,13 +13,17 @@ router.put('/comments/:id', user_controller.update_comment);
 router.post('/signup', user_controller.user_signup_post);
 router.post('/login', user_controller.user_login_post, (req, res) => {
   console.log(req.body);
-  if (!req.user) {
-    console.log('User not found!');
-    res.send(req.body);
-  } else {
-    console.log('Signed in');
-    res.send(req.body);
-  }
+  req.session.save(() => {
+    if (!req.user) {
+      console.log('User not found!');
+      res.send(req.body);
+    } else {
+      console.log('Signed in');
+      res.send(req.body);
+    }
+  });
 });
+
+router.get('/logout', user_controller.user_logout);
 
 module.exports = router;

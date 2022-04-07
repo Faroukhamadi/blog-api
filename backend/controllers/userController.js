@@ -63,8 +63,6 @@ exports.post_comment = (req, res, next) => {
   });
 };
 
-// exports.user_signup_post = (req, res) => {};
-
 exports.user_signup_post = (req, res, next) => {
   User.findOne({ username: req.body.username }, (err, user) => {
     if (err) return next(err);
@@ -87,3 +85,10 @@ exports.user_signup_post = (req, res, next) => {
 };
 
 exports.user_login_post = passport.authenticate('local');
+
+exports.user_logout = (req, res) => {
+  if (req.user) console.log('user exists before logout');
+  else console.log('user doesnt exist before logout');
+  req.logout();
+  res.json(req.user);
+};

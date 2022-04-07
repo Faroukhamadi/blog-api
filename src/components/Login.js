@@ -1,40 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthenticationContext } from '../App';
 
-const Login = () => {
+const Login = (props) => {
+  const contextValue = useContext(AuthenticationContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchAuth = () => {
-      fetch('/api/checkauthentication', {
-        credentials: 'include',
-        mode: 'no-cors',
-      })
-        // .then(() => console.log('fetching auth status'))
-        .then((response) => response.json())
-        .then((data) => {
-          //  setLoggedIn(data.authenticated);
-          console.log('yes', data);
-        });
-    };
-    fetchAuth();
-  }, [isLoggedIn]);
-
   const login = (data) => {
     fetch('/api/users/login', {
+      mode: 'cors',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Vary: 'Origin',
+        'Access-Control-Allow-Credentials': true,
+        Connection: 'keep-alive',
+        'Keep-Alive': 'timeout=5',
       },
       body: JSON.stringify(data),
       credentials: 'include',
     })
-      .then((response) => response.json())
-      .then(setIsLoggedIn(!isLoggedIn))
-      .then((data) => console.log('DATAAAAAAAAAA: ', data))
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        props.setLoggedIn(true);
+        console.log('DATAAAAAAAAAA: ', data);
+        navigate('/');
+      })
       .catch((err) => {
         console.log('Error: ', err);
       });

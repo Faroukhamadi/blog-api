@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
@@ -7,6 +7,8 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import Signup from './components/Signup';
+const AuthenticationContext = createContext();
+export { AuthenticationContext };
 
 function App() {
   const [users, setUsers] = useState();
@@ -71,16 +73,21 @@ function App() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="app ">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route exact path="/" element={<Main posts={posts} />} />
-          <Route path="/:postId" element={<Post posts={posts} />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <AuthenticationContext.Provider value={loggedIn}>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route exact path="/" element={<Main posts={posts} />} />
+            <Route path="/:postId" element={<Post posts={posts} />} />
+            <Route
+              path="/login"
+              element={<Login loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
+            />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </AuthenticationContext.Provider>
     </div>
   );
 }

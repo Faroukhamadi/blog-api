@@ -13,6 +13,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const session = require('express-session');
 const User = require('./models/user');
+const cors = require('cors');
 
 const app = express();
 
@@ -26,26 +27,24 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(
   session({
-    secret: 'cats',
+    secret: 'cat',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-      secure: true,
-      sameSite: 'none',
-    },
+    cookie: { secure: false },
   })
 );
+app.use(cors({ credentials: true, origin: '*' }));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('cat'));
 app.use(express.static(path.join(__dirname, 'public')));
 passport.use(
   new LocalStrategy((username, password, done) => {
     User.findOne({ username: username }, (err, user) => {
       if (err) return done(err);
       if (!user) return done(null, false, { message: 'Incorrect username' });
-      // console.log('users password', user.password);
+      console.log('users password', user.password);
       bcrypt.compare(password, user.password, (err, res) => {
         console.log('INSIDEEEE1');
         if (res) {
@@ -75,16 +74,26 @@ passport.deserializeUser((id, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
-
+app.get('/api/checkauthentication', (req, res) => {
+  // req.isAuthenticated()
+  // req.isAuthenticated()
+  //   ? res.status(200).json({ authenticated: true })
+  //   : res.status(401).json({ authenticated: false });
+  if (!req.user) {
+    console.log('User not found!');
+    res.status(401).json({ authenticated: false });
+    // res.json(req.body);
+  } else {
+    console.log('Signed in');
+    res.status(200).json({ authenticated: true });
+  }
+  // req.user
+  //   ? res.status(200).json({ authenticated: true })
+  //   : res.status(401).json({ authenticated: false });
+});
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/posts', postsRouter);
-app.get('/api/checkauthentication', (req, res) => {
-  // req.isAuthenticated()
-  req.isAuthenticated()
-    ? res.status(200).json({ authenticated: true })
-    : res.status(401).json({ authenticated: false });
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

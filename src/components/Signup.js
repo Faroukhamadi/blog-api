@@ -47,7 +47,7 @@ const Signup = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
           <div id="usernamehelp" className="form-text">
-            wwwwWe'll never share your Username with anyone else.
+            We'll never share your Username with anyone else.
           </div>
         </div>
         <div className="mb-3">
